@@ -15,7 +15,7 @@ const ShoppingCartPage: React.FC<RouteComponentProps> = (props) => {
     const [ cart, setCart ] = useRecoilState(cartState);
 
     const incArticleCount = (code: string) => {
-        const idx = cart.findIndex(itm => itm.articleCode == code);
+        const idx = cart.findIndex(itm => itm.itemCode == code);
         if (idx !== -1) {
             const item = cart[idx];
             const newCart = replaceItemAtIndex(cart, idx, {
@@ -28,7 +28,7 @@ const ShoppingCartPage: React.FC<RouteComponentProps> = (props) => {
     }
 
     const decArticleCount = (code: string) => {
-        const idx = cart.findIndex(itm => itm.articleCode == code);
+        const idx = cart.findIndex(itm => itm.itemCode == code);
         if (idx !== -1) {
             const item = cart[idx];
             const newItem = {

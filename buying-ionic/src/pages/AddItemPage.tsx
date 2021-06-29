@@ -4,14 +4,14 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { cartState, CartDisplayItem } from '../state/Cart';
 import { CartItem } from '../components/CartItem';
 import NumKeyboard from '../components/NumKeyboard';
-import { articlesState, findArticle, ItemCategory } from '../state/Article';
+import { inventoryState, findItem, ItemCategory } from '../state/Inventory';
 import './Page.css';
 
-const AddArticlePage: React.FC = () => {
-    const articles = useRecoilValue(articlesState);
+const AddItemPage: React.FC = () => {
+    const inventory = useRecoilValue(inventoryState);
     const [cart, setCart] = useRecoilState(cartState);
-    const [articleNum, setArticleNum] = useState("");
-    const [articleFound, setArticleFound] = useState(false);
+    const [itemCode, setArticleNum] = useState("");
+    const [itemFound, setArticleFound] = useState(false);
     const [tempCartItem, setTempCartItem] = useState<CartDisplayItem>();
 
     const handleKey = (arg: string) => {
@@ -21,12 +21,12 @@ const AddArticlePage: React.FC = () => {
       if (arg == "OK") {
         // add article to shopping cart
         if (tempCartItem) {
-          const article = findArticle(tempCartItem.code , articles);
-          if (article) {
+          const item = findItem(tempCartItem.code , inventory);
+          if (item) {
             console.debug("add to cart");
             setCart((cart) => [ ...cart,
               {
-                articleCode: articleNum,
+                itemCode: itemCode,
                 count: tempCartItem.count,
               }
             ]);
@@ -40,30 +40,30 @@ const AddArticlePage: React.FC = () => {
         return;
       }
 
-      let newArticleNum = articleNum;
+      let newItemCode = itemCode;
       if (arg == "Back") {
-        if (articleNum.length > 0) {
-          newArticleNum = articleNum.substring(0, articleNum.length-1);
+        if (itemCode.length > 0) {
+          newItemCode = itemCode.substring(0, itemCode.length-1);
         }
       } else {
-        if (articleNum.length < 3) {
-          newArticleNum = articleNum + arg;
+        if (itemCode.length < 3) {
+          newItemCode = itemCode + arg;
         }
       }
-      setArticleNum(newArticleNum);
+      setArticleNum(newItemCode);
 
-      if (newArticleNum.length == 3) {
+      if (newItemCode.length == 3) {
           // 3 digits entered
-          const article = findArticle(newArticleNum, articles);
-          if (article) {
+          const item = findItem(newItemCode, inventory);
+          if (item) {
               setArticleFound(true);
               setTempCartItem({
-                code: article.code,
-                description: article.description,
-                category: article.category,
-                price: article.price,
+                code: item.code,
+                description: item.description,
+                category: item.category,
+                price: item.price,
                 count: 1,
-                itemprice: article.price,
+                itemprice: item.price,
               });
           }
           else {
@@ -117,12 +117,12 @@ const AddArticlePage: React.FC = () => {
             <IonTitle size="large">New</IonTitle>
             </IonToolbar>
         </IonHeader>
-        <NumKeyboard callback={handleKey} okEnabled={articleFound} />
+        <NumKeyboard callback={handleKey} okEnabled={itemFound} />
         <IonGrid>
             <IonRow>
               <IonCol size="4"></IonCol>
               <IonCol class="ion-justify-content-center">
-                  {articleNum}
+                  {itemCode}
               </IonCol>
               <IonCol size="4"></IonCol>
             </IonRow>
@@ -143,4 +143,4 @@ const AddArticlePage: React.FC = () => {
     );
 };
 
-export default AddArticlePage;
+export default AddItemPage;

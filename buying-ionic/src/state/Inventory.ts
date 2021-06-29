@@ -9,29 +9,29 @@ export enum ItemCategory {
     Household
 }
 
-export type Article =  {
+export type Item =  {
     code: string
     category: ItemCategory
     description: string
     price: number
 }
 
-export const articlesState = atom({
-    key: 'articlesState',
+export const inventoryState = atom({
+    key: 'inventoryState',
     default: [
-        <Article>({
+        <Item>({
             code : "123",
             category: ItemCategory.Beer,
             description: "Bier, Paul",
             price: 1.10
         }),
-        <Article>({
+        <Item>({
             code : "124",
             category: ItemCategory.Beer,
             description: "Bier, Sprint",
             price: 1.10
         }),
-        <Article>({
+        <Item>({
             code : "135",
             category: ItemCategory.Wine,
             description: "Prosecco, Volpi",
@@ -40,6 +40,6 @@ export const articlesState = atom({
     ],
 });
 
-export function findArticle(code: string, articles: Article[]): Article | undefined {
-    return articles.find(a => a.code == code);
+export function findItem(code: string, items: Item[]): Item | undefined {
+    return items.find(a => a.code == code);
 } 

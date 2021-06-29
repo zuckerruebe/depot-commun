@@ -1,8 +1,8 @@
 import { atom, selector } from 'recoil';
-import { ItemCategory, articlesState, findArticle } from './Article';
+import { ItemCategory, inventoryState, findItem } from './Inventory';
 
 type CartItem = {
-    articleCode: string;
+    itemCode: string;
     count: number;
 }
 
@@ -24,9 +24,9 @@ export const cartDisplayState = selector({
     key: 'cartDisplayState',
     get: ({get}) => {
         const cart = get(cartState);
-        const articles = get(articlesState);
+        const articles = get(inventoryState);
         return cart.map(itm => {
-            const article = findArticle(itm.articleCode, articles);
+            const article = findItem(itm.itemCode, articles);
             return <CartDisplayItem>({
                 code: article?.code,
                 description: article?.description,

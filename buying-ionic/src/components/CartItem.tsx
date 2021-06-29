@@ -1,7 +1,7 @@
 import { IonButton, IonGrid, IonRow, IonCol, IonIcon, IonItem, IonLabel } from '@ionic/react';
 import { basketOutline, beerOutline, wineOutline } from 'ionicons/icons';
 import { add, remove } from 'ionicons/icons';
-import { ItemCategory } from '../state/Article';
+import { ItemCategory } from '../state/Inventory';
 
 interface CartItemProps {
     code: string;
