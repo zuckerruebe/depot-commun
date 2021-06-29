@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import {bagCheckOutline, bagCheckSharp, cartOutline, cartSharp, logOutOutline, settingsOutline, settingsSharp } from 'ionicons/icons';
+import {bagCheckOutline, bagCheckSharp, cartOutline, cartSharp, libraryOutline, librarySharp, logOutOutline, settingsOutline, settingsSharp } from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -33,6 +33,12 @@ const appPages: AppPage[] = [
     url: '/page/Purchases',
     iosIcon: bagCheckOutline,
     mdIcon: bagCheckSharp
+  },
+  {
+    title: 'Inventory',
+    url: '/page/Inventory',
+    iosIcon: libraryOutline,
+    mdIcon: librarySharp,
   },
   {
     title: 'Settings',

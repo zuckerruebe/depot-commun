@@ -5,6 +5,7 @@ import { RecoilRoot } from 'recoil';
 import Menu from './components/Menu';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import AddItemPage from './pages/AddItemPage';
+import InventoryPage from './pages/InventoryPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               </Route>
               <Route path="/page/Shop" component={ShoppingCartPage} exact={true} />
               <Route path="/page/New" component={AddItemPage} exact={true} />
+              <Route path="/page/Inventory" component={InventoryPage} exact={true} />
               {/* <Route path="/page/:name" exact={true}>
                 <Page />
               </Route> */}
