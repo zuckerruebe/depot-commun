@@ -1,14 +1,55 @@
-import { IonButtons, IonContent, IonHeader, IonIcon, IonList, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonList, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { RouteComponentProps } from 'react-router';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { authState, queryCurrentUser } from '../state/Auth';
 import { inventoryState, ItemCategory } from '../state/Inventory';
 import { InventoryItem }  from '../components/InventoryItem';
+import { useEffect } from 'react';
 import React from 'react';
+import axios from 'axios';
 import './Page.css';
 
-const InventoryPage: React.FC<RouteComponentProps> = (props) => {
-    const inventory = useRecoilValue(inventoryState);
+type ApiItem = {
+  product_nr : number,
+  name: string,
+  price: number,
+  tags: string[],
+  number_of_items_in_stock: number,
+}
 
+const InventoryPage: React.FC<RouteComponentProps> = (props) => {
+    const [inventory, setInventory] = useRecoilState(inventoryState);
+
+    const [auth, setAuth] = useRecoilState(authState);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+          const newAuth = await queryCurrentUser();
+          // todo: this is useless as it is
+          if (auth !== newAuth) {
+            setAuth(newAuth);
+          }
+        }
+        checkAuth();
+      }, [auth]);
+
+    useEffect(() => {       
+      // load inventory from API
+      axios.get('/buying/items/available-items/')
+      .then(response => {
+        setInventory(response.data.map((itm : ApiItem) => {
+          return {
+            code: itm.product_nr.toString(),
+            description: itm.name,
+            price: itm.price,
+          }
+        }));
+      })
+      .catch(error => {
+        console.log('error on getting items: ' + error)
+      })
+    }, [])
+  
     return (
         <IonPage>
           <IonHeader>
@@ -17,6 +58,7 @@ const InventoryPage: React.FC<RouteComponentProps> = (props) => {
                 <IonMenuButton />
               </IonButtons>
               <IonTitle>Inventory</IonTitle>
+              <IonLabel slot="end">{auth.userName}</IonLabel>
             </IonToolbar>
           </IonHeader>
     
