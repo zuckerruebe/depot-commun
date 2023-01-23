@@ -17,8 +17,8 @@ DATABASES = {
 }
 
 # disable cookie samesite config for react debugging
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_SAMESITE = 'Strict'
 CORS_ALLOW_CREDENTIALS = True
 
 

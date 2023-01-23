@@ -22,7 +22,7 @@ class MayReadPurchases(BasePermission):
         if not user.is_authenticated:
             return False
 
-        requested_user_uuid = view.kwargs['user_uuid']
+        requested_user_uuid = view.kwargs['id']
 
         return user.uuid == requested_user_uuid
 

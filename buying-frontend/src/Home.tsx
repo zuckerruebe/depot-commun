@@ -1,17 +1,18 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { RouterProps } from 'react-router-dom';
 import { Box, Button, Heading } from 'grommet';
-import { queryCurrentUser, useAuth } from './context/auth';
+import { queryCurrentUserNameAndId, useAuth } from './context/auth';
 
 const Home : FunctionComponent<RouterProps> = (props) => {
     const auth = useAuth();
 
     useEffect(() => {
         // query current-user from back-end
-        queryCurrentUser()
-        .then( userName => {
-            console.log('current-user query sucess. user: '+ userName);
-            auth.setUserName(userName);
+        queryCurrentUserNameAndId()
+        .then( ({name, id}) => {
+            console.log(`current-user query sucess. name = ${name}, id = ${id}`);
+            auth.setUserName(name);
+            auth.setUserId(id)
         })
         .catch( error => {
             console.log('error on current-user query: ' + error);

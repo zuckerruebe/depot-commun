@@ -13,11 +13,15 @@ const loginUrl = baseUrl + '/buying/auth/login/';
 
 // send session cookies
 axios.defaults.withCredentials = true;
+axios.defaults.xsrfHeaderName = "X-CSRFToken"
+axios.defaults.xsrfCookieName = "csrftoken"
 
 type Auth = {
     isAuthenticated: boolean,
     userName: string,
     setUserName: (name: string) => void,
+    userId: string,
+    setUserId: (name: string) => void,
     loginUrl: string,
     logout: () => void
 }
@@ -26,6 +30,8 @@ const authContext = createContext<Auth>({
     isAuthenticated: false, 
     userName: '',
     setUserName: (name: string) => {},
+    userId: '',
+    setUserId: (id: string) => {},
     loginUrl: loginUrl,
     logout: () => {}
 });
@@ -48,14 +54,24 @@ function useProvideAuth(): Auth
     });
 
     const setUserName = (name: string) => {
-        setUser(name);
+        setUser(name)
         localStorage.setItem('userName', name);
+    }
+
+    const [id, setId] = useState<string>(() => {
+        return localStorage.getItem('userId') || '';
+    })
+
+    const setUserId = (id: string) => {
+        setId(id)
+        localStorage.setItem('userId', id)
     }
 
     const logout = () => {
         axios.get(baseUrl + '/buying/auth/logout/')
             .then(response => {
-                setUserName('');
+                setUserName('')
+                setUserId('')
             })
             .catch(error => {
                 console.log('error on logout: '+ error)
@@ -66,16 +82,18 @@ function useProvideAuth(): Auth
         isAuthenticated: user !== '',
         userName: user,
         setUserName,
+        userId: id,
+        setUserId,
         loginUrl,
         logout
     }
 }
 
 
-export function queryCurrentUser(): Promise<string> {
+export function queryCurrentUserNameAndId(): Promise<{name: string, id: string}> {
     // query current-user from back-end
     return axios.get('/buying/current-user/', { withCredentials: true })
         .then(response => {
-            return response.data.name;
+            return {name: response.data.name, id: response.data.uuid};
         });
 }
